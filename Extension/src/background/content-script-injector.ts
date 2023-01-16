@@ -19,6 +19,11 @@ import browser from 'webextension-polyfill';
 import { isHttpRequest } from '@adguard/tswebextension';
 import { TabsApi } from './api/extension/tabs';
 import { Log } from '../common/log';
+import {
+    CONTENT_SCRIPT_START_OUTPUT,
+    CONTENT_SCRIPT_END_OUTPUT,
+    SUBSCRIBE_OUTPUT,
+} from '../../../environment';
 
 /**
  * helper class for injecting content script into tabs, opened before extension initialization
@@ -28,8 +33,9 @@ export class ContentScriptInjector {
      * Content-scripts src relative paths
      */
     private static contentScripts = [
-        '/pages/content-script-start.js',
-        '/pages/content-script-end.js',
+        ContentScriptInjector.createContentScriptUrl(CONTENT_SCRIPT_START_OUTPUT),
+        ContentScriptInjector.createContentScriptUrl(CONTENT_SCRIPT_END_OUTPUT),
+        ContentScriptInjector.createContentScriptUrl(SUBSCRIBE_OUTPUT),
     ];
 
     /**
@@ -86,5 +92,9 @@ export class ContentScriptInjector {
             const message = error instanceof Error ? error.message : String(error);
             throw new Error(`Cannot inject ${src} to tab ${tabId}. Error: ${message}`);
         }
+    }
+
+    private static createContentScriptUrl(fileName: string): string {
+        return `/${fileName}.js`;
     }
 }
