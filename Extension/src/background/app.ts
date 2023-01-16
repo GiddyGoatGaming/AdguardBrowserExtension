@@ -65,7 +65,6 @@ import { SettingOption } from './schema';
 import { getRunInfo } from './utils';
 import { CLIENT_ID_KEY } from '../common/constants';
 import { contextMenuEvents, settingsEvents } from './events';
-import { ContentScriptInjector } from './content-script-injector';
 
 /**
  * This class is app entry point
@@ -217,8 +216,6 @@ export class App {
         await Engine.start();
 
         appContext.set(AppContextKey.IsInit, true);
-
-        await ContentScriptInjector.init();
 
         await sendMessage({ type: MessageType.AppInitialized });
     }
