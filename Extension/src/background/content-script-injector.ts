@@ -42,8 +42,8 @@ export class ContentScriptInjector {
 
         tabs.forEach((tab) => {
             // Do not inject scripts into extension pages, browser internals and tabs without id
-            if (!tab.id
-                || !tab.url
+            if (typeof tab.id !== 'number'
+                || typeof tab.url !== 'string'
                 || !isHttpRequest(tab.url)
             ) {
                 return;
